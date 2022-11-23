@@ -2,6 +2,7 @@
 
 1. Lesson 1:
    1. Created database schema using dbdiagram.io
+   
 2. Lesson 2:
    1. Setup docker, and the postgres container in docker
      - Steps to run the postgres container: <br>
@@ -10,9 +11,12 @@
         3. Run a container from the image: <br/> `docker run --name <container_name> -e <env_variable> -p <host_ports> -d <image:tag>` e.g. docker run --name postgres14 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:14-alpine
         4. List all running containers: <br/> `docker ps`
         5. Execute the container (run psql): <br/> `docker exec -it <container_name_or_id> <command> [args]` e.g. docker exec -it postgres14 psql -U postgres
-
    2. Setup the database by running the sql file.
+   
 3. Lesson 3:
    1. Installed golang-migrate for managing database migration
-   2. 
+   2. Created a  `Makefile` to automate creation, dropping and running of db. To run any command in the `Makefile`: <br/> `make <command>`
+   3. Create a migration file: <br> `migrate create -ext <extension_name> -dir <directory_location> -seq <file_name>` e.g. migrate create -ext sql -dir db/migration -seq init_schema
+   4. Run `migrate` command to execute the migration: <br/> `migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/simplebank?sslmode=disable" -verbose up`
+   
 4. Lesson 4:
