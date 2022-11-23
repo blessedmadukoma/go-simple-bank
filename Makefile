@@ -7,10 +7,20 @@ createdb:
 dropdb:
 		docker exec -it postgres14 dropdb --username=postgres simplebank
 
+psql: # log in to simplebank db in psql terminal
+		docker exec -it postgres14 psql -U postgres -d simplebank
+
+createmigration:
+		migrate -help
+		migrate create -ext sql -dir db/migration -seq [ADDNAME]
+
 migrateup:
 		migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/simplebank?sslmode=disable" -verbose up
 
 migratedown:
 		migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/simplebank?sslmode=disable" -verbose down
 
-.PHONY: postgres createdb dropdb migrateup migratedown
+sqlc:
+		sqlc generate
+
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc

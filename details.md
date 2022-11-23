@@ -19,4 +19,7 @@
    3. Create a migration file: <br> `migrate create -ext <extension_name> -dir <directory_location> -seq <file_name>` e.g. migrate create -ext sql -dir db/migration -seq init_schema
    4. Run `migrate` command to execute the migration: <br/> `migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/simplebank?sslmode=disable" -verbose up`
    
-4. Lesson 4:
+4. Lesson 4: Generate CRUD Golang code from SQL
+   1. Installed `sqlc` using brew and set up the `sqlc.yaml` config.
+   2. Added sqlc to Makefile for autogeneration of Go SQL code
+   3. generated Accounts struct and models using sqlc
