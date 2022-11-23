@@ -28,4 +28,4 @@
    1. installed [pq](github.com/lib/pq) database driver to set up the TestMain function which tests the database connection 
    2. installed [testify](github.com/stretchr/testify) to perform unit test operations for Creating, Getting, Updating and Deleting accounts, entries and transfers
    3. created util package for random generation of money, owner name, integers and currencies
-   4. added test command to the Makefile
+   4. added Golang test command to the Makefile
