@@ -22,4 +22,10 @@
 4. Lesson 4: Generate CRUD Golang code from SQL
    1. Installed `sqlc` using brew and set up the `sqlc.yaml` config.
    2. Added sqlc to Makefile for autogeneration of Go SQL code
-   3. generated Accounts struct and models using sqlc
+   3. generated Accounts, Entries and Transfers struct and CRUD operation methods using sqlc
+
+5. Lesson 5: Unit testing Go database CRUD
+   1. installed [pq](github.com/lib/pq) database driver to set up the TestMain function which tests the database connection 
+   2. installed [testify](github.com/stretchr/testify) to perform unit test operations for Creating, Getting, Updating and Deleting accounts, entries and transfers
+   3. created util package for random generation of money, owner name, integers and currencies
+   4. added test command to the Makefile
