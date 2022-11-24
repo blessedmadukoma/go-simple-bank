@@ -36,3 +36,5 @@
       2. to provide isolation between programs that access the database concurrently
    2. created method and store struct (involves composition) for Transaction which performs the following operations: create a transfer record, add account entries, update accounts' balance
    3. wrote test for transfer transaction
+   
+7. Lesson 6: How to Debug a Deadlock

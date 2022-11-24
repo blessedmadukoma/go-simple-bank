@@ -6,7 +6,7 @@ INSERT INTO entries (
 )
 RETURNING *;
 
--- name: GetEntry :one
+-- name: GetEntryByID :one
 SELECT * FROM entries 
 WHERE id = $1 
 LIMIT 1;

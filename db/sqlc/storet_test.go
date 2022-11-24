@@ -47,7 +47,7 @@ func TestStore_TransferTx(t *testing.T) {
 		require.NotZero(t, transfer.ID)
 		require.NotZero(t, transfer.CreatedAt)
 
-		_, err = store.GetTransfer(context.Background(), transfer.ID)
+		_, err = store.GetTransferByID(context.Background(), transfer.ID)
 		require.NoError(t, err)
 
 		sourceAccountTransaction := result.FromEntry
@@ -56,7 +56,7 @@ func TestStore_TransferTx(t *testing.T) {
 		require.Equal(t, amount, sourceAccountTransaction.Amount)
 		require.NotZero(t, sourceAccountTransaction.ID)
 
-		_, err = store.GetTransfer(context.Background(), sourceAccountTransaction.ID)
+		_, err = store.GetTransferByID(context.Background(), sourceAccountTransaction.ID)
 		require.NoError(t, err)
 
 		destinationAccountTransaction := result.ToEntry
@@ -65,7 +65,7 @@ func TestStore_TransferTx(t *testing.T) {
 		require.Equal(t, amount, destinationAccountTransaction.Amount)
 		require.NotZero(t, destinationAccountTransaction.ID)
 
-		_, err = store.GetEntry(context.Background(), destinationAccountTransaction.ID)
+		_, err = store.GetEntryByID(context.Background(), destinationAccountTransaction.ID)
 		require.NoError(t, err)
 
 		//go:TODO check account balance

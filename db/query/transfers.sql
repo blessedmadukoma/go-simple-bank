@@ -6,7 +6,7 @@ INSERT INTO transfers (
 )
 RETURNING *;
 
--- name: GetTransfer :one
+-- name: GetTransferByID :one
 SELECT * FROM transfers 
 WHERE id = $1 
 LIMIT 1;
