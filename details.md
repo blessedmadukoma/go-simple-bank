@@ -37,4 +37,9 @@
    2. created method and store struct (involves composition) for Transaction which performs the following operations: create a transfer record, add account entries, update accounts' balance
    3. wrote test for transfer transaction
    
-7. Lesson 6: How to Debug a Deadlock
+7. Lesson 7: How to Debug a Deadlock
+   1. added transfer feature
+   2. added code in sql to prevent deadlock
+   3. update balance of both accounts
+   
+8. Lesson 8: How to avoid DB Deadlock 
