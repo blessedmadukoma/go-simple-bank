@@ -3,7 +3,6 @@ package db
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"testing"
 	"time"
 
@@ -17,7 +16,7 @@ import (
 func createRandomAccount(t *testing.T) Account {
 	arg := CreateAccountParams{
 		Owner:    util.RandomOwner(),
-		Balance:  fmt.Sprint(util.RandomMoney()),
+		Balance:  util.RandomMoney(),
 		Currency: util.RandomCurrency(),
 	}
 
@@ -61,8 +60,8 @@ func TestUpdateAccount(t *testing.T) {
 	account1 := createRandomAccount(t)
 
 	arg := UpdateAccountParams{
-		ID: account1.ID,
-		Balance: fmt.Sprint(util.RandomMoney()),
+		ID:      account1.ID,
+		Balance: util.RandomMoney(),
 	}
 
 	account2, err := testQueries.UpdateAccount(context.Background(), arg)
@@ -89,12 +88,12 @@ func TestDeleteAccocunt(t *testing.T) {
 }
 
 func TestListAccounts(t *testing.T) {
-	for i:=0; i < 10; i++ {
+	for i := 0; i < 10; i++ {
 		createRandomAccount(t)
 	}
 
 	arg := ListAccountsParams{
-		Limit: 5,
+		Limit:  5,
 		Offset: 5,
 	}
 

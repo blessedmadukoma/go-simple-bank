@@ -29,3 +29,10 @@
    2. installed [testify](github.com/stretchr/testify) to perform unit test operations for Creating, Getting, Updating and Deleting accounts, entries and transfers
    3. created util package for random generation of money, owner name, integers and currencies
    4. added Golang test command to the Makefile
+
+6. Lesson 6: Golang DB Transaction
+   1. Why we need db transaction:
+      1. to provide a reliable and consistent unit of work, even in case of system failure
+      2. to provide isolation between programs that access the database concurrently
+   2. created method and store struct (involves composition) for Transaction which performs the following operations: create a transfer record, add account entries, update accounts' balance
+   3. wrote test for transfer transaction

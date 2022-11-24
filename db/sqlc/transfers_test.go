@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	"fmt"
 	"testing"
 	"time"
 
@@ -14,7 +13,7 @@ func createRandomTransfer(t *testing.T, account1 Account, account2 Account) Tran
 	arg := CreateTransferParams{
 		FromAccountID: account1.ID,
 		ToAccountID:   account2.ID,
-		Amount: fmt.Sprint(util.RandomMoney()),
+		Amount:        util.RandomMoney(),
 	}
 
 	transfer, err := testQueries.CreateTransfer(context.Background(), arg)
@@ -66,9 +65,9 @@ func TestListTransfers(t *testing.T) {
 
 	arg := ListTransfersParams{
 		FromAccountID: account1.ID,
-		ToAccountID: account1.ID,
-		Limit:     5,
-		Offset:    5,
+		ToAccountID:   account1.ID,
+		Limit:         5,
+		Offset:        5,
 	}
 
 	transfers, err := testQueries.ListTransfers(context.Background(), arg)
