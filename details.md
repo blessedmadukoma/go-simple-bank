@@ -52,3 +52,5 @@
 
 10. Lecture 9: Github Actions in Go and Postgres
     1.  Set up package directory for Github actions (CI/CD): `.github/workflows/`
+    2.  added postgres service to the `ci.yml` workflow
+    3.  added golang-migrate installation, `make migrateup` (for migration) and `make test` (for test) in the steps of the workflow.
