@@ -16,7 +16,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres14
+        image: postgres
         # Provide the password for postgres
         env:
           POSTGRES_USER: postgres
