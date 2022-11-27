@@ -54,3 +54,4 @@
     1.  Set up package directory for Github actions (CI/CD): `.github/workflows/`
     2.  added postgres service to the `ci.yml` workflow
     3.  added golang-migrate installation, `make migrateup` (for migration) and `make test` (for test) in the steps of the workflow.
+    4.  added cURL command to install golang-migrate, move the installed golang-migrate into the user's bin folder (using the | or pipe) and added a `which migrate` command to see if migrate was installed successfully
