@@ -47,3 +47,8 @@
    2. implemented addMoney function for easy code readability
 
 9. Lecture 9: Transaction Isolation Level
+   1.  MySQL uses 4 isolation levels - read uncommited, read commited, repeatable read, serializable
+   2.  Postgres uses 3 isolation levels - read commited (same with read uncommited - which works like read commited, not read uncommited in MySQL), repeatable read, serializable
+
+10. Lecture 9: Github Actions in Go and Postgres
+    1.  Set up package directory for Github actions (CI/CD): `.github/workflows/`
