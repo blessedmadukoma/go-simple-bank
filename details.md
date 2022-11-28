@@ -63,6 +63,12 @@
     4.  implemented a createAccountRequest struct to handle input values of a new user (balance by default, will be 0)
     5.  created a `main.go` to handle running of the server, which the method was created in the `server.go` file.
     6.  Fixed the major bug when testing the transfer of money from one account to another i.e. another instance of the `testDB` was being instantiated in the main_test.go (i.e. testDB, err := sql.Open), instead of using the global `testDB` variable (testDB, err = sql.Open)
-    7.  updated Makefile by adding `server` command to run the api
+    7.  updated Makefile by adding `server` command to run the api.
     8.  created endpoints for testing the create account and get account, list accounts (using pagination) and update accounts features.
-    9.  updated `sqlc.yaml` to emit empty slices, which returns empty slice ([]) instead of nil or null when the record is empty
+    9.  updated `sqlc.yaml` to emit empty slices, which returns empty slice ([]) instead of nil or null when the record is empty.
+    
+12. Lecture 12: Load config from file & env vars with Viper
+    1.  installed [`viper`](github.com/spf13/viper) using the go get commmand.
+    2.  created `app.env` to house the environmental variables
+    3.  implemented LoadConfig() method in  `config.go` to load the env variables from the app.env file using viper.
+    4.  updated main.go and main_test.go files to read from the LoadConfig() method.
