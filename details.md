@@ -64,5 +64,5 @@
     5.  created a `main.go` to handle running of the server, which the method was created in the `server.go` file.
     6.  Fixed the major bug when testing the transfer of money from one account to another i.e. another instance of the `testDB` was being instantiated in the main_test.go (i.e. testDB, err := sql.Open), instead of using the global `testDB` variable (testDB, err = sql.Open)
     7.  updated Makefile by adding `server` command to run the api
-    8.  created endpoints for testing the create account and get account, list accounts (using pagination) features.
+    8.  created endpoints for testing the create account and get account, list accounts (using pagination) and update accounts features.
     9.  updated `sqlc.yaml` to emit empty slices, which returns empty slice ([]) instead of nil or null when the record is empty
