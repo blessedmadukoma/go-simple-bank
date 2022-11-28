@@ -50,8 +50,19 @@
    1.  MySQL uses 4 isolation levels - read uncommited, read commited, repeatable read, serializable
    2.  Postgres uses 3 isolation levels - read commited (same with read uncommited - which works like read commited, not read uncommited in MySQL), repeatable read, serializable
 
-10. Lecture 9: Github Actions in Go and Postgres
+10. Lecture 10: Github Actions in Go and Postgres
     1.  Set up package directory for Github actions (CI/CD): `.github/workflows/`
     2.  added postgres service to the `ci.yml` workflow
     3.  added golang-migrate installation, `make migrateup` (for migration) and `make test` (for test) in the steps of the workflow.
     4.  added cURL command to install golang-migrate, move the installed golang-migrate into the user's bin folder (using the | or pipe) and added a `which migrate` command to see if migrate was installed successfully
+
+11. Lecture 11: Implement HTTP API in Go using Gin
+    1.  installed gin using the `go get` command
+    2.  created a new folder `api` and a `server.go` file to handle API and server requests
+    3.  created an errorResponse method to handle error response
+    4.  implemented a createAccountRequest struct to handle input values of a new user (balance by default, will be 0)
+    5.  created a `main.go` to handle running of the server, which the method was created in the `server.go` file.
+    6.  Fixed the major bug when testing the transfer of money from one account to another i.e. another instance of the `testDB` was being instantiated in the main_test.go (i.e. testDB, err := sql.Open), instead of using the global `testDB` variable (testDB, err = sql.Open)
+    7.  updated Makefile by adding `server` command to run the api
+    8.  created endpoints for testing the create account and get account, list accounts (using pagination) features.
+    9.  updated `sqlc.yaml` to emit empty slices, which returns empty slice ([]) instead of nil or null when the record is empty
