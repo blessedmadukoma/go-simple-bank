@@ -82,10 +82,25 @@
     3. create a store interface and rename Store struct to SQLStore struct which executes all SQL queries and transactions
     4. update Store interface by adding the TransferTx method
     5. update sqlc config (sqlc.yaml) -> emit_interface: true, then rerun `sqlc generate` or `make sqlc` which creates a Querier file
-    6. update Store interface by adding the newly generated Querier interface, which holds all methods implementing the *Queries struct
-    7. update server.go by removing the pointers from `store db.Store` on both struct and method parameters since Store is no longer a struct but an interface
-    8. create a new folder `mock` in the db folder
-    9. run a mockgen command on the module name which holds the sqlc queries and the interface, and add the destination (the mock folder created) and a proper package name: `mockgen -package mockdb -destination db/mock/store.go github.com/blessedmadukoma/go-simple-bank/db/sqlc Store` . Before running the command, get the mock package: `go get github.com/golang/mock`, remove the `// indirect` in go.mod
-    10. add mock command to Makefile
-    11. implement test for GetAccount API, added table-driven tests by testing multiple values in a struct (with fields `name` to identify the name of the test, `accountID`, `buildStubs`, and `checkResponse`)
-    12. to have cleaner logs for the tests output, we create a new `main_test.go` in the api folder and change the gin.SetMode to TestMode
+ 14. update Store interface by adding the newly generated Querier interface, which holds all methods implementing the *Queries struct
+    1. update server.go by removing the pointers from `store db.Store` on both struct and method parameters since Store is no longer a struct but an interface
+    2. create a new folder `mock` in the db folder
+    3. run a mockgen command on the module name which holds the sqlc queries and the interface, and add the destination (the mock folder created) and a proper package name: `mockgen -package mockdb -destination db/mock/store.go github.com/blessedmadukoma/go-simple-bank/db/sqlc Store` . Before running the command, get the mock package: `go get github.com/golang/mock`, remove the `// indirect` in go.mod
+    4.  add mock command to Makefile
+    5.  implement test for GetAccount API, added table-driven tests by testing multiple values in a struct (with fields `name` to identify the name of the test, `accountID`, `buildStubs`, and `checkResponse`)
+    6.  to have cleaner logs for the tests output, we create a new `main_test.go` in the api folder and change the gin.SetMode to TestMode
+
+14. Lecture 14: Custom params validator in Go
+    1.  created transfer.go to handle transfer API
+    2.  wrote a validAccount method to check if an account exists and the currency matches the input currency
+    3.  updated server.go by adding the route for transfer
+    4.  created a validator.go file to validate the currency, which removes the duplication we have
+    5.  created currency.go in util package, added supported currency as constants and implemented a method `IsSupportedCurrency` to validate if the currency is supported or not.
+    6.  register the custom validation method `validCurrency` in server.go
+    7.  replace all oneOf=... with the name of the registered validation: `currency` 
+
+15. Lecture 15: Add users table with unique foreign key contraints in PostgreSQL
+    1.  updated dbdiagram design by adding a user's table, linking the `owner` field in Accounts to the user's table and setting a composite index on the currency and owner meaning a user must only have one USD account (not 2) or one EUR account (not 2 EUR accts), but can have USD, EUR, NGN accounts.
+    2.  generated a new migration add_users
+    3.  replaced the composite index with: ALTER TABLE "accounts" ADD CONSTRAINT "owner_currency_key" UNIQUE ("owner", "currency") . They do the same thing, so pick one
+    4.  updated Makefile by adding migrateup1 and migratedown1 commands to either migrate the very last or latest schema sql up or down respectively

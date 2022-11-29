@@ -121,3 +121,7 @@ func TestGetAccountAPI(t *testing.T) {
 		})
 	}
 }
+
+func TestListAccounts(t *testing.T) {
+
+}
