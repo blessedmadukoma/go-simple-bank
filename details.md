@@ -72,3 +72,20 @@
     2.  created `app.env` to house the environmental variables
     3.  implemented LoadConfig() method in  `config.go` to load the env variables from the app.env file using viper.
     4.  updated main.go and main_test.go files to read from the LoadConfig() method.
+
+13. Lecture 13: Mock database for testing HTTP API in Go
+    1.  Why Mock DB?
+        1.  independent tests - isolate test data to avoid conflicts
+        2.  faster tests - reduce a lot of time talking to the db
+        3.  100% coverage - easily setup edge cases such as unexpected cases
+    2. installed [mockgen](github.com/golang/mock/mockgen@v1.6.0), a package in gomock
+    3. create a store interface and rename Store struct to SQLStore struct which executes all SQL queries and transactions
+    4. update Store interface by adding the TransferTx method
+    5. update sqlc config (sqlc.yaml) -> emit_interface: true, then rerun `sqlc generate` or `make sqlc` which creates a Querier file
+    6. update Store interface by adding the newly generated Querier interface, which holds all methods implementing the *Queries struct
+    7. update server.go by removing the pointers from `store db.Store` on both struct and method parameters since Store is no longer a struct but an interface
+    8. create a new folder `mock` in the db folder
+    9. run a mockgen command on the module name which holds the sqlc queries and the interface, and add the destination (the mock folder created) and a proper package name: `mockgen -package mockdb -destination db/mock/store.go github.com/blessedmadukoma/go-simple-bank/db/sqlc Store` . Before running the command, get the mock package: `go get github.com/golang/mock`, remove the `// indirect` in go.mod
+    10. add mock command to Makefile
+    11. implement test for GetAccount API, added table-driven tests by testing multiple values in a struct (with fields `name` to identify the name of the test, `accountID`, `buildStubs`, and `checkResponse`)
+    12. to have cleaner logs for the tests output, we create a new `main_test.go` in the api folder and change the gin.SetMode to TestMode

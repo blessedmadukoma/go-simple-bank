@@ -29,7 +29,9 @@ RETURNING *;
 
 -- name: AddAccountBalance :one
 UPDATE accounts
-SET balance = balance + sqlc.arg(amount)
+SET 
+balance = balance + sqlc.arg(amount),
+updated_at = now()
 WHERE id = sqlc.arg(id)
 RETURNING *;
 
