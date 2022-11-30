@@ -104,3 +104,10 @@
     2.  generated a new migration add_users
     3.  replaced the composite index with: ALTER TABLE "accounts" ADD CONSTRAINT "owner_currency_key" UNIQUE ("owner", "currency") . They do the same thing, so pick one
     4.  updated Makefile by adding migrateup1 and migratedown1 commands to either migrate the very last or latest schema sql up or down respectively
+
+16. Lecture 16: Handle DB errors in Go
+    1.  create a user.sql file in db/query and write sql to create and get user by username. Generate sqlc.
+    2.  Write tests to check the create and get user methods
+    3.  update the failed tests such as accounts_test.go and transfers_test.go by adding the randomCreateUser method to the test files and replacing all `Owner` params with `user.Username` 
+    4.  run `make mock` to regenerate the mockgen code to avoid errors
+    5.  update account.go API to return a proper PostgreSQL error, if error found when creating an account

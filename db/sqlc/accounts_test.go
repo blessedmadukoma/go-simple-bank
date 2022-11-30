@@ -14,8 +14,10 @@ import (
 
 // createRandomAccount randomly creates an account - note: does not have `Test` prefix because there is no test on it, the test is in the `TestCreateAccount` method
 func createRandomAccount(t *testing.T) Account {
+	user := createRandomUser(t)
+
 	arg := CreateAccountParams{
-		Owner:    util.RandomOwner(),
+		Owner:    user.Username,
 		Balance:  util.RandomMoney(),
 		Currency: util.RandomCurrency(),
 	}
