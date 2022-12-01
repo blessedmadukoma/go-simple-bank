@@ -111,3 +111,11 @@
     3.  update the failed tests such as accounts_test.go and transfers_test.go by adding the randomCreateUser method to the test files and replacing all `Owner` params with `user.Username` 
     4.  run `make mock` to regenerate the mockgen code to avoid errors
     5.  update account.go API to return a proper PostgreSQL error, if error found when creating an account
+
+17. Lecture 17: Hash passwords in Go using Bcrypt
+    1.  create a password.go and password_test.go in util package to handle Hashing of password, checking the hashed password with user input password, and testing both methods respectively.
+    2.  update createRandomUser by adding the hashPassword method which generates a hashed password
+    3.  created user.go API to create a new user and get a user by username
+
+18. Lecture 18: Write stronger Golang unit tests with a custom Go-Mock matcher
+    1.  
