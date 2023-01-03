@@ -27,7 +27,7 @@ func (srv *Server) createTransfer(ctx *gin.Context) {
 	if !srv.validAccount(ctx, req.FromAccountID, req.Currency) {
 		return
 	}
-
+ 
 	if !srv.validAccount(ctx, req.ToAccountID, req.Currency) {
 		return
 	}
