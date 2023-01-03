@@ -118,4 +118,4 @@
     3.  created user.go API to create a new user and get a user by username
 
 18. Lecture 18: Write stronger Golang unit tests with a custom Go-Mock matcher
-    1.  
+    1.  quickly added test case for users in the `api` folder
