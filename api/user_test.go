@@ -22,7 +22,7 @@ import (
 
 /******
 
-// Lecture 18: stopped at 2 minutes 51 seconds
+// Lecture 18: stopped at 3 minutes 15 seconds
 
 *****/
 
@@ -145,7 +145,7 @@ func TestCreateUserAPI(t *testing.T) {
 			data, err := json.Marshal(tc.body)
 			require.NoError(t, err)
 
-			url := "/users"
+			url := "/api/users"
 			request, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(data))
 			require.NoError(t, err)
 
