@@ -119,3 +119,4 @@
 
 18. Lecture 18: Write stronger Golang unit tests with a custom Go-Mock matcher
     1.  quickly added test case for users in the `api` folder
+    2.  wrote tests to validate the users details
