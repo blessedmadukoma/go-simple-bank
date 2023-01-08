@@ -120,3 +120,29 @@
 18. Lecture 18: Write stronger Golang unit tests with a custom Go-Mock matcher
     1.  quickly added test case for users in the `api` folder
     2.  wrote tests to validate the users details
+
+19. Lecture 19: Why PASETO is better than JWT
+    1.  Problems with JWT
+        1.  weak algorithms: too much algorithms to choose from and some algorithms are known to be vulnerable
+        2.  trivial forgery
+    2. Why PASETO - Platform-Agnostic SEcurity TOkens
+       1. Stronger algorithms - devs don't have to choose the algorithm, only select the version
+       2. Non-trivial forgery - everything is authenticated, no more "none" algorithm
+       3. PASETO structure:
+          1. Local
+            - main parts of the token: 
+              - version
+              - purpose e.g. local
+              - payload:
+                 - body (encrypted i.e. hashed or decrypted i.e. json format)
+                 - Nonce
+                 - Authentication tag
+              - Footer (encoded or decoded)
+          2. Public
+           
+           - main parts of the token: 
+              - version
+              - purpose e.g. public
+              - payload:
+                 - body (encrypted i.e. hashed or decrypted i.e. json format)
+               - Signature
