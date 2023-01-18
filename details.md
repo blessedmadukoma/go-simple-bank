@@ -156,3 +156,7 @@
     3. Wrote Paseto token:
        1. created `paseto` file for making a new paseto token, creating paseto token and verifying the token
        2. wrote tests for `TestPasetoMaker`, `TestInvalidKeySize`, `TestExpiredPasetoToken` and `TestInvalidPasetoToken`
+
+
+21. Lecture 21: Implement login API with PASETO and JWT
+    1. 

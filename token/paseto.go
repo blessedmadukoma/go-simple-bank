@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	ErrInvalidKeySize     = fmt.Errorf("invalid key size: must be exactly %d characters", chacha20poly1305.KeySize)
+	errInvalidKeySize     = fmt.Errorf("invalid key size: must be exactly %d characters", chacha20poly1305.KeySize)
 	errInvalidPasetoToken = fmt.Errorf("error decrypting paseto token: %s", ErrInvalidToken)
 )
 
@@ -22,7 +22,7 @@ type PasetoMaker struct {
 // NewPasetoMaker creates a new Paseto maker
 func NewPasetoMaker(symmetricKey string) (Maker, error) {
 	if len(symmetricKey) != chacha20poly1305.KeySize {
-		return nil, ErrInvalidKeySize
+		return nil, errInvalidKeySize
 	}
 
 	// maker := &PasetoMaker{

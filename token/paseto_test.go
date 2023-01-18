@@ -34,7 +34,7 @@ func TestPasetoMaker(t *testing.T) {
 func TestInvalidKeySize(t *testing.T) {
 	maker, err := NewPasetoMaker(util.RandomString(10))
 	require.Error(t, err)
-	require.EqualError(t, err, ErrInvalidKeySize.Error())
+	require.EqualError(t, err, errInvalidKeySize.Error())
 	require.Nil(t, maker)
 }
 
