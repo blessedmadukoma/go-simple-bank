@@ -34,7 +34,7 @@ func (m *JWTMaker) CreateToken(username string, duration time.Duration) (string,
 	return jwtToken.SignedString([]byte(m.secretKey))
 }
 
-// VerifyToken checks if the token is valid or not
+// VerifyToken checks if the token is valid or not 123
 func (m *JWTMaker) VerifyToken(token string) (*Payload, error) {
 	// keyFunc checks if the algorithm to hash matches
 	keyFunc := func(tkn *jwt.Token) (interface{}, error) {

@@ -148,10 +148,11 @@
                - Signature
 
 20. Lecture 20: How to create and verify JWT and PASETO token in Go
-    1. wrote JWT token:
-       1. created `token` package/folder to make the token
-       2. created `Payload` struct to contain the data of the token, wrote `NewTokenPayload` function to create a new payload
-       3. created `jwt` file to create JWT and the token, and verify the token
-       4. wrote tests for JWTMaker (creating and validating token), expired token and invalid token also with no algorithm used
-    2. Wrote Paseto token:
-       1. 
+    1. created `token` package/folder to make the token
+    2. wrote JWT token:
+       1. created `Payload` struct to contain the data of the token, wrote `NewTokenPayload` function to create a new payload
+       2. created `jwt` file to create JWT and the token, and verify the token
+       3. wrote tests for JWTMaker (creating and validating token), expired token and invalid token also with no algorithm used
+    3. Wrote Paseto token:
+       1. created `paseto` file for making a new paseto token, creating paseto token and verifying the token
+       2. wrote tests for `TestPasetoMaker`, `TestInvalidKeySize`, `TestExpiredPasetoToken` and `TestInvalidPasetoToken`

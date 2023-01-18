@@ -8,6 +8,11 @@ import (
 	"github.com/o1egl/paseto"
 )
 
+var (
+	ErrInvalidKeySize     = fmt.Errorf("invalid key size: must be exactly %d characters", chacha20poly1305.KeySize)
+	errInvalidPasetoToken = fmt.Errorf("error decrypting paseto token: %s", ErrInvalidToken)
+)
+
 // PasetoMaker is a PASETO token maker
 type PasetoMaker struct {
 	paseto       *paseto.V2
@@ -17,7 +22,7 @@ type PasetoMaker struct {
 // NewPasetoMaker creates a new Paseto maker
 func NewPasetoMaker(symmetricKey string) (Maker, error) {
 	if len(symmetricKey) != chacha20poly1305.KeySize {
-		return nil, fmt.Errorf("invalid key size: must be exactly %d characters", chacha20poly1305.KeySize)
+		return nil, ErrInvalidKeySize
 	}
 
 	// maker := &PasetoMaker{
@@ -44,7 +49,7 @@ func (mkr *PasetoMaker) VerifyToken(token string) (*Payload, error) {
 	payload := &Payload{}
 	err := mkr.paseto.Decrypt(token, mkr.symmetricKey, payload, nil)
 	if err != nil {
-		return nil, fmt.Errorf("error decrypting paseto token: %s", ErrInvalidToken)
+		return nil, errInvalidPasetoToken
 	}
 
 	err = payload.Valid()
