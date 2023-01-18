@@ -1,4 +1,4 @@
-## Logs of what I did for each video
+## Logs of what I did
 
 1. Lecture 1:
    1. Created database schema using dbdiagram.io
@@ -146,3 +146,12 @@
               - payload:
                  - body (encrypted i.e. hashed or decrypted i.e. json format)
                - Signature
+
+20. Lecture 20: How to create and verify JWT and PASETO token in Go
+    1. wrote JWT token:
+       1. created `token` package/folder to make the token
+       2. created `Payload` struct to contain the data of the token, wrote `NewTokenPayload` function to create a new payload
+       3. created `jwt` file to create JWT and the token, and verify the token
+       4. wrote tests for JWTMaker (creating and validating token), expired token and invalid token also with no algorithm used
+    2. Wrote Paseto token:
+       1. 
