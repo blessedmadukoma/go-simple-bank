@@ -97,7 +97,7 @@
     4.  created a validator.go file to validate the currency, which removes the duplication we have
     5.  created currency.go in util package, added supported currency as constants and implemented a method `IsSupportedCurrency` to validate if the currency is supported or not.
     6.  register the custom validation method `validCurrency` in server.go
-    7.  replace all oneOf=... with the name of the registered validation: `currency` 
+    7.  replace all oneOf... with the name of the registered validation: `currency` 
 
 15. Lecture 15: Add users table with unique foreign key contraints in PostgreSQL
     1.  updated dbdiagram design by adding a user's table, linking the `owner` field in Accounts to the user's table and setting a composite index on the currency and owner meaning a user must only have one USD account (not 2) or one EUR account (not 2 EUR accts), but can have USD, EUR, NGN accounts.
@@ -159,4 +159,13 @@
 
 
 21. Lecture 21: Implement login API with PASETO and JWT
-    1. 
+    1. added `tokenMaker` field to Server struct
+    2. added new fields: `TokenSymmetricKey` and `AccessTokenDuration` to the `config` struct
+    3. updated `NewServer` to take in config as a parameter, create a new token (PASETO)
+    4. wrote a `newTestServer` for testing the `NewServer` method
+    5. updated `api/user.go` by creating a `userResponse` struct and `login` method
+    6. created a function `newUserResponse` which returns a newly created user
+    7. wrote the `loginUser` handler api method to log in a user
+    8. added  `/login` endpoint or route to the server
+    9. grouped the routes
+    10. either JWT or PASETO can be used to generate access token (comment out any of the lines in `api/server.go`)

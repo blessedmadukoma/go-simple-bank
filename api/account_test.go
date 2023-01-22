@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"database/sql"
 	"encoding/json"
-	"fmt"
+"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -106,7 +106,7 @@ func TestGetAccountAPI(t *testing.T) {
 			tc.buildStubs(store)
 
 			// start test server and send request
-			server := NewServer(store)
+			server := newTestServer(t, store)
 			// mimic the normal server
 			recorder := httptest.NewRecorder()
 
