@@ -2,10 +2,12 @@ package api
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"net/http"
 
 	db "github.com/blessedmadukoma/go-simple-bank/db/sqlc"
+	"github.com/blessedmadukoma/go-simple-bank/token"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,11 +26,29 @@ func (srv *Server) createTransfer(ctx *gin.Context) {
 		return
 	}
 
-	if !srv.validAccount(ctx, req.FromAccountID, req.Currency) {
+	fromAccount, valid := srv.validAccount(ctx, req.FromAccountID, req.Currency)
+	if !valid {
 		return
 	}
- 
-	if !srv.validAccount(ctx, req.ToAccountID, req.Currency) {
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+
+	if fromAccount.Owner != authPayload.Username {
+		err := errors.New("from account does not belong to the authenticated user")
+		ctx.JSON(http.StatusUnauthorized, errorResponse("could not transfer money", err))
+		// ctx.JSON(http.StatusUnauthorized, errorResponse("from account does not belong to the authenticated user", nil))
+		return
+	}
+
+	_, valid = srv.validAccount(ctx, req.FromAccountID, req.Currency)
+	if !valid {
+		return
+	}
+
+	senderAccount, _ := srv.store.GetAccountByID(ctx, req.FromAccountID)
+	if req.Amount > senderAccount.Balance {
+		err := fmt.Errorf("Amount can not be greater than balance")
+		ctx.JSON(http.StatusBadRequest, errorResponse("cannot perform transfer", err))
 		return
 	}
 
@@ -49,22 +69,22 @@ func (srv *Server) createTransfer(ctx *gin.Context) {
 }
 
 // validAccount checks if an account exists and the currency matches the input currency
-func (srv *Server) validAccount(ctx *gin.Context, accountID int64, currency string) bool {
+func (srv *Server) validAccount(ctx *gin.Context, accountID int64, currency string) (db.Account, bool) {
 	account, err := srv.store.GetAccountByID(ctx, accountID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			ctx.JSON(http.StatusNotFound, errorResponse("No record of this user", err))
-			return false
+			return account, false
 		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse("error retrieving user account", err))
-		return false
+		return account, false
 	}
 
 	if account.Currency != currency {
 		err := fmt.Errorf("account [%d] currency mismatch: %s vs %s", account.ID, account.Currency, currency)
 		ctx.JSON(http.StatusBadRequest, errorResponse("Currency mismatch!", err))
-		return false
+		return account, false
 	}
 
-	return true
+	return account, true
 }

@@ -169,3 +169,19 @@
     8. added  `/login` endpoint or route to the server
     9. grouped the routes
     10. either JWT or PASETO can be used to generate access token (comment out any of the lines in `api/server.go`)
+
+22. How to implement authentication middleware
+    1.  created `api/middleware.go`
+    2.  wrote authentication middleware to verify if the access token is present in the authorization header
+    3.  wrote test for authMiddleware function
+    4.  updated specific routes to have authorization
+    5.  removed `owner` field in `CreateAccountRequest` struct because of the auth route
+    6.  added `authPayload` which contains the owner info from the `Authorization` token
+    7.  updated `getAccountByID` to validate if the account gotten belongs to the unauthenticated user
+    8.  updated `accounts.sql` by adding a WHERE clause to list accounts based on the authenticated user
+    9.  ran `make sqlc` and `make mock` on the terminal to regenerate/update the database and mockgen i.e. `accounts.sql.go` file
+    10. update `db/sqlc/TestListAccounts` test function by adding an owner to the account, the listAccountsParams and requiring the account should not be empty.
+    11. updated `api/listAccounts` by adding an owner which is generated from the bearer token.
+    12. modified transfer.go by updating the `validAccount` method through returning `account`, updating `createTransfer` method to check if the user is authenticated before making a transfer
+    13. updated `account_test.go` by adding a new parameter `owner` to specify the authenticated owner, updated `TestGetAccountAPI` by modifying the create account function to generate a new user, added `setupAuth` function 
+    14. fixed tests errors and added new tests...probably the craziest code I've written
