@@ -185,3 +185,6 @@
     12. modified transfer.go by updating the `validAccount` method through returning `account`, updating `createTransfer` method to check if the user is authenticated before making a transfer
     13. updated `account_test.go` by adding a new parameter `owner` to specify the authenticated owner, updated `TestGetAccountAPI` by modifying the create account function to generate a new user, added `setupAuth` function 
     14. fixed tests errors and added new tests...probably the craziest code I've written
+
+23. How to build a minimal Golang Docker image
+    1.  checked out to a new branch for building a docker image
