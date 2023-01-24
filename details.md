@@ -188,3 +188,5 @@
 
 23. How to build a minimal Golang Docker image
     1.  checked out to a new branch for building a docker image
+    2.  updated golang version in `go.mod` and github workflow
+    3.  
