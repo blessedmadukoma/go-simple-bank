@@ -189,4 +189,39 @@
 23. How to build a minimal Golang Docker image
     1.  checked out to a new branch for building a docker image
     2.  updated golang version in `go.mod` and github workflow
-    3.  
+    3.  created a Dockerfile containing:
+         ```
+         // use a lightweight Golang docker image <br>
+         FROM golang:1.19.5-alpine3.16 <br>
+         // set the current working directory to `app` <br>
+         WORKDIR /app <br>
+         // copy all the contents to the working directory <br>
+         COPY . . <br>
+         // build the contents with the executable being named `main`
+         RUN go build -o main main.go <br>
+
+         // expose the port 
+         EXPOSE 9000 <br/>
+         CMD [ "/app/main" ] <br/>
+            
+         ```
+    4.  Built the Dockerfile using `docker build -t simplebank:latest .`
+    5.  Due to the large ddocker image size generated, we converted the code to binary file:
+
+      ```
+         # Build stage
+         FROM golang:1.19.5-alpine3.16 AS builder
+         WORKDIR /app
+         COPY . .
+         RUN go build -o main main.go
+
+         # Run stage
+         FROM alpine:3.16
+         WORKDIR /app
+         COPY --from=builder /app/main .
+
+         EXPOSE 9000
+         CMD [ "/app/main" ]
+      ```
+        - and ran `docker build -t simplebank:latest .` again.
+        - checked the image size: `docker images`
