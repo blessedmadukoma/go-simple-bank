@@ -244,3 +244,14 @@
          5.   check the network details and copy the IP address of the container: `docker container inspect container_name` e.g. `docker container inspect postgres14`
          6.   run the simple bank docker application but with a network tag to run the  postgres database on the same network: `docker run --name simplebank --network bank-network -p 9000:9000 -e GIN_MODE=release -e DB_SOURCE="postgresql://postgres:postgres@postgres14/simplebank?sslmode=disable" simplebank:latest`
     11. updated postgres command in `Makefile` to run on the created network `bank-network`
+
+25. How to use Docker compose
+    1.  Docker compose will help in starting multiple services at once and control their start-up orders (wait-for)
+    2.  created a docker-compose.yaml file, added services, environments and ports.
+    3.  ran `docker compose up`
+    4.  added the command to install golang-migrate to the Dockerfile
+    5.  added the command which copies the migration files (located in db/migration) into the Dockerfile.
+    6.  added the command which installs cURL since the alpine image by default does not come with cURL.
+    7.  changed the way the app starts by creating a `start.sh` file to run the database migration before running the app and gave it executable permission (chmod +x start.sh)
+    8.  added entry point for running the app to the Dockerfile
+    9.  ran `docker compose down` to remove the existing containers and networks, then ran `docker compose up`
