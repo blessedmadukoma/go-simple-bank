@@ -2,3 +2,5 @@
 .git
 ~.lock
 /tmp
+.DS_Store
+.vscode

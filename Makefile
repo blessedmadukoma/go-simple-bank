@@ -33,6 +33,9 @@ sqlc:
 test:
 		go test -v -cover ./...
 
+shuffletest:
+		go test -shuffle=on ./...
+
 server:
 		go run main.go
 	
