@@ -255,3 +255,4 @@
     7.  changed the way the app starts by creating a `start.sh` file to run the database migration before running the app and gave it executable permission (chmod +x start.sh)
     8.  added entry point for running the app to the Dockerfile
     9.  ran `docker compose down` to remove the existing containers and networks, then ran `docker compose up`
+    10. added start.sh to Dockerfile, added `depends_on` tag in docker-compose.yaml, added wait-for.sh to work with `depends_on` tag
