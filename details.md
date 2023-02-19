@@ -188,3 +188,71 @@
 
 23. How to build a minimal Golang Docker image
     1.  checked out to a new branch for building a docker image
+    2.  updated golang version in `go.mod` and github workflow
+    3.  created a Dockerfile containing:
+         ```
+         // use a lightweight Golang docker image <br>
+         FROM golang:1.19.5-alpine3.16 <br>
+         // set the current working directory to `app` <br>
+         WORKDIR /app <br>
+         // copy all the contents to the working directory <br>
+         COPY . . <br>
+         // build the contents with the executable being named `main`
+         RUN go build -o main main.go <br>
+
+         // expose the port 
+         EXPOSE 9000 <br/>
+         CMD [ "/app/main" ] <br/>
+            
+         ```
+    4.  Built the Dockerfile using `docker build -t simplebank:latest .`
+    5.  Due to the large ddocker image size generated, we converted the code to binary file:
+
+      ```
+         # Build stage
+         FROM golang:1.19.5-alpine3.16 AS builder
+         WORKDIR /app
+         COPY . .
+         RUN go build -o main main.go
+
+         # Run stage
+         FROM alpine:3.16
+         WORKDIR /app
+         COPY --from=builder /app/main .
+
+         EXPOSE 9000
+         CMD [ "/app/main" ]
+      ```
+        - and ran `docker build -t simplebank:latest .` again.
+        - checked the image size: `docker images`
+
+24. How to connect containers in the same docker network
+    1.  start a docker container: docker run --name `container_name` -p `port:port` `image_name:tag` e.g. `docker run --name simplebank -p 9000:9000 simplebank:latest`
+    2.   added `COPY app.env .` to Dockerfile which copies our environmental variables which will only be used for test purposes.
+    3.   before re-running the docker container, remove the existing image: docker rm `name of container_image` e.g. `docker rm simplebank`. Then `docker ps -a` to view all containers. Then `docker rmi image_id` to remove the docker image e.g. `docker rmi e4c8ec76fe6a`. Check if the image still exists: `docker images`
+    4.   rebuild the docker image: `docker build -t simplebank:latest .`
+    5.   run the docker image: `docker run --name simplebank -p 9000:9000 simplebank:latest`.
+    6.   stopped the server and removed the docker image: `docker rm simplebank`
+    7.   ran the server with GIN in production mode: `docker run --name simplebank -e GIN_MODE=release -p 9000:9000 simplebank:latest`. Does not show any logs at first, until a request is made.
+    8.   Run: `docker container inspect image_name` to view detailed information about an image such as Network settings. E.g. `docker container inspect postgres14`, `docker container inspect simplebank`
+    9.   stopped the `simplebank` container, removed it (`docker rm simplebank`) and started it again but with an env for the database to connect to the docker postgres database: `docker run --name simplebank -p 9000:9000 -e GIN_MODE=release -e DB_SOURCE="postgresql://postgres:postgres@172.17.0.2:5432/simplebank?sslmode=disable" simplebank:latest`
+    10.  Best way to connect to a docker Postgres db: using user defined network
+         1.   run `docker network ls` to view the running networks and IDs
+         2.   view more information of the specific network: `docker network inspect network_name` e.g. `docker network inspect bridge`
+         3.   create my own network: `docker network create network_name` e.g. `docker network create bank-network`
+         4.   connect the created network: `docker network connect network_name container_name` e.g. `docker network connect bank-network postgres14`
+         5.   check the network details and copy the IP address of the container: `docker container inspect container_name` e.g. `docker container inspect postgres14`
+         6.   run the simple bank docker application but with a network tag to run the  postgres database on the same network: `docker run --name simplebank --network bank-network -p 9000:9000 -e GIN_MODE=release -e DB_SOURCE="postgresql://postgres:postgres@postgres14/simplebank?sslmode=disable" simplebank:latest`
+    11. updated postgres command in `Makefile` to run on the created network `bank-network`
+
+25. How to use Docker compose
+    1.  Docker compose will help in starting multiple services at once and control their start-up orders (wait-for)
+    2.  created a docker-compose.yaml file, added services, environments and ports.
+    3.  ran `docker compose up`
+    4.  added the command to install golang-migrate to the Dockerfile
+    5.  added the command which copies the migration files (located in db/migration) into the Dockerfile.
+    6.  added the command which installs cURL since the alpine image by default does not come with cURL.
+    7.  changed the way the app starts by creating a `start.sh` file to run the database migration before running the app and gave it executable permission (chmod +x start.sh)
+    8.  added entry point for running the app to the Dockerfile
+    9.  ran `docker compose down` to remove the existing containers and networks, then ran `docker compose up`
+    10. added start.sh to Dockerfile, added `depends_on` tag in docker-compose.yaml, added wait-for.sh to work with `depends_on` tag
