@@ -260,3 +260,12 @@
 26-36. Skipped lectures 26 to 36: involves AWS and Kubernetes
 
 37. Manage sessions with Refresh Token
+    1.  created new refresh token variable in config and env
+    2.  created new db migration for session by running: `migrate create -ext sql -dir db/migration -seq add_sessions`
+    3.  create sesion table in the new db query file 
+    4.  ran `make sqlc` to generate the query and `make mock` to fix any error in the `store`
+    5.  ran `make test` to make sure all tests passed
+    6.  modified the `login` api to create and return a refresh token, and updated the `CreateToken` method in the `Maker` file to return the payload for the token ID.
+    7.  fixed the `paseto.go` and `jwt.go` errors due to third return variable, and updated the test files (`paseto_test.go`, `jwt_test.go` and `../api/middleware_test.go`) to accept the payloads.
+    8.  Updated accessToken code block, added Refresh token and session to user response.
+    9.  updated `api/user_test.go` to call `CreateSession` in `TestLoginUserAPI`

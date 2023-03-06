@@ -220,6 +220,7 @@ func TestLoginUserAPI(t *testing.T) {
 				store.EXPECT().
 					CreateUser(gomock.Any(), gomock.Any()).
 					AnyTimes()
+				store.EXPECT().CreateSession(gomock.Any(), gomock.Any()).Times(1)
 			},
 			checkResponse: func(recorder *httptest.ResponseRecorder) {
 				require.Equal(t, http.StatusOK, recorder.Code)
