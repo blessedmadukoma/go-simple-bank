@@ -269,3 +269,4 @@
     7.  fixed the `paseto.go` and `jwt.go` errors due to third return variable, and updated the test files (`paseto_test.go`, `jwt_test.go` and `../api/middleware_test.go`) to accept the payloads.
     8.  Updated accessToken code block, added Refresh token and session to user response.
     9.  updated `api/user_test.go` to call `CreateSession` in `TestLoginUserAPI`
+    10. added method to refresh token

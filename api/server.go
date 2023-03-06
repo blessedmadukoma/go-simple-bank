@@ -55,6 +55,9 @@ func (server *Server) setupRouter() {
 	routes := router.Group("/api")
 	{
 
+		// token route
+		routes.POST("/token/renew_access", server.renewAccessToken)
+
 		// users routes
 		userRoute := routes.Group("/users")
 		{
