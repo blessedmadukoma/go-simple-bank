@@ -36,10 +36,16 @@ test:
 shuffletest:
 		go test -shuffle=on ./...
 
+db_docs:
+		dbdocs build docs/db.dbml
+
+db_schema:
+		dbml2sql --postgresql -o docs/schema.sql docs/db.dbml
+
 server:
 		go run main.go
 	
 mock:
 		mockgen -package mockdb -destination db/mock/store.go github.com/blessedmadukoma/go-simple-bank/db/sqlc Store
 
-.PHONY: postgres createdb dropdb psql createmigration migrateup migratedown migrateup1 migratedown1 sqlc test server mock
+.PHONY: postgres createdb dropdb psql createmigration migrateup migratedown migrateup1 migratedown1 sqlc test server mock db_docs db_schema

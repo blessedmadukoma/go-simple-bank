@@ -270,3 +270,14 @@
     8.  Updated accessToken code block, added Refresh token and session to user response.
     9.  updated `api/user_test.go` to call `CreateSession` in `TestLoginUserAPI`
     10. added method to refresh token
+
+38. Generate DB Docs from DBML code: using dbdocs.io
+    1.  installed dbdocs using yarn: `yarn global add dbdocs`
+    2.  created `docs/db.dbml` to generate docs for the first migration file
+    3.  logged in to dbdocs using `dbdocs login`
+    4.  built/generated the docs: `dbdocs build <path to your dbml file>/database.dbml`
+    5.  set password for the db docs: `dbdocs password --set <password> --project <project name>`
+    6.  Note: to remove a project: `dbdocs remove <project></project name>`
+    7.  installed dbml CLI to generate from dbml to sql code: `yarn global add @dbml/cli`
+    8.  converted the dbml file to sql code: `dbml2sql --postgres -o docs/schema.sql docs/db.dbml`
+    9.  updated `Makefile` by adding two commands: `db_docs` - generate db docs, `db_schema` - generate sql (postgres in this case)
