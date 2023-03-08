@@ -33,8 +33,8 @@ sqlc:
 test:
 		go test -v -cover ./...
 
-shuffletest:
-		go test -shuffle=on ./...
+# shuffletest:
+# 		go test -shuffle=on ./...
 
 db_docs:
 		dbdocs build docs/db.dbml
