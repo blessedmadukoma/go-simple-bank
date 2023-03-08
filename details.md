@@ -281,3 +281,13 @@
     7.  installed dbml CLI to generate from dbml to sql code: `yarn global add @dbml/cli`
     8.  converted the dbml file to sql code: `dbml2sql --postgres -o docs/schema.sql docs/db.dbml`
     9.  updated `Makefile` by adding two commands: `db_docs` - generate db docs, `db_schema` - generate sql (postgres in this case)
+
+39. GRPC
+    1.  Types of gRPC:
+        - Unary gRPC: client sends a request, server sends a response
+        - Client streaming gRPC: client sends a stream of multiple requests or messages, server sends a response
+        - Server streaming gRPC: client sends a request, server sends a stream of multiple responses or messages
+        - Bidirectional streaming gRPC: client sends a stream of request, server sends a stream of multiple responses or messages
+    2. gRPC gateway: serves both gRPC and HTTP Requests at once
+
+40. Generate Go code from protobuf
