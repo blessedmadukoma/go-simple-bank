@@ -283,11 +283,17 @@
     9.  updated `Makefile` by adding two commands: `db_docs` - generate db docs, `db_schema` - generate sql (postgres in this case)
 
 39. GRPC
-    1.  Types of gRPC:
+    1.  How gRPC works:
+        1.  Define API & data structure: the RPC and its request/response are defined using protobuf.
+        2.  Generate gRPC stubs: generate codes for the server and client in the language of your choice.
+        3.  Implement the new server: implement the handler on the server side.
+        4.  Use the client: use the generated client stubs to call the RPC on the server.
+    2.  Types of gRPC:
         - Unary gRPC: client sends a request, server sends a response
         - Client streaming gRPC: client sends a stream of multiple requests or messages, server sends a response
         - Server streaming gRPC: client sends a request, server sends a stream of multiple responses or messages
         - Bidirectional streaming gRPC: client sends a stream of request, server sends a stream of multiple responses or messages
-    2. gRPC gateway: serves both gRPC and HTTP Requests at once
+    3. gRPC gateway: serves both gRPC and HTTP Requests at once
 
 40. Generate Go code from protobuf
+    1.  
