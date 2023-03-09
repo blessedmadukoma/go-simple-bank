@@ -296,4 +296,12 @@
     3. gRPC gateway: serves both gRPC and HTTP Requests at once
 
 40. Generate Go code from protobuf
-    1.  
+    1.  installed protobuf from [protobuf](https://grpc.io/docs/protoc-installation/) using the command: `brew install protobuf`
+    2.  check if protobuf was installed: `protoc --version`
+    3.  installed go plugins for the protocol compiler:
+        - go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
+        - go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+    4. check the installed version of the `protoc-gen-go`: `protoc-gen-go --version` and `protoc-gen-go-grpc`: `protoc-gen-go-grpc --version`
+    5. created and added details to `user.proto` file, then duplicated in a new file `rpc_create_user.proto` for the Create user operation, and added a new rpc "method" to the created `service_simplebank.proto`.
+    6. Repeated step 5 but for login user.
+    7. updated Makefile by adding new command `proto` to generate all gRPC code and run `go mod tidy` to fix all import errors
