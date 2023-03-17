@@ -305,3 +305,6 @@
     5. created and added details to `user.proto` file, then duplicated in a new file `rpc_create_user.proto` for the Create user operation, and added a new rpc "method" to the created `service_simplebank.proto`.
     6. Repeated step 5 but for login user.
     7. updated Makefile by adding new command `proto` to generate all gRPC code and run `go mod tidy` to fix all import errors
+
+41. How to run a gRPC server
+    1.  

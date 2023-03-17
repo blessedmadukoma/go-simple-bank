@@ -2,6 +2,21 @@ postgres:
 		# docker run --name postgres14 -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres:14-alpine
 		docker run --name postgres14 --network bank-network -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres:14-alpine
 
+sbrunonce: # run simplebank docker image once
+		docker run --name simple-bank-api --network bank-network -p 8080:8080 -e DB_URL=postgres://postgres:postgres@postgres14:5432/simplebank?sslmode=disable -d simple-bank-api
+
+pgstart:
+		docker start postgres14
+
+pgstop:
+		docker stop postgres14
+
+sbstart:
+		docker start simple-bank-api
+
+sbstop:
+		docker stop simple-bank-api
+
 createdb:
 		docker exec -it postgres14 createdb --username=postgres --owner=postgres simplebank
 
