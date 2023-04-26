@@ -307,4 +307,13 @@
     7. updated Makefile by adding new command `proto` to generate all gRPC code and run `go mod tidy` to fix all import errors
 
 41. How to run a gRPC server
-    1.  
+    1.  created `gapi` (to replace the `api` directory) for running the grpc server
+    2.  added `server.go` into the `gapi` folder
+    3.  updated `main.go` by adding new function to run the gRPC server
+    4.  updated `env` and `config.go` files by adding server address for gRPC
+    5.  installed [Evans](https://github.com/ktr0731/evans) (gRPC client) to connect to the gRPC server
+    6.  ran `evans --host localhost --port 9090 -r repl` in terminal to connect to the gRPC server
+    7.  Added `evans` command to Makefile 
+    8.  Evans commands:
+        - show service: show loaded service names
+        - call service_name e.g. call CreateUser: call a service name
