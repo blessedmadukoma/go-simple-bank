@@ -317,3 +317,8 @@
     8.  Evans commands:
         - show service: show loaded service names
         - call service_name e.g. call CreateUser: call a service name
+
+42. Implement gRPC API to create and login users
+    1.  created a new file `rpc_create_user.go` in `gapi` folder and added the `CreateUser` method with a little modification (gRPC takes care of binding the data or fields i.e. no need for ctx.ShouldBindJSON)
+    2.  created `converter.go` to convert `db,User` to `*pb.User`
+    3.  created `rpc_login_user.go` and added `LoginUser` method.
