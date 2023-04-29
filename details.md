@@ -340,7 +340,9 @@
     1.   created a new package `tools` with a file `tools.go`, installed [gRPC gateway](https://github.com/grpc-ecosystem/grpc-gateway) (ran go mod tidy)
     2.   Installed the binaries needed by running this command:
         `go install \
-    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
-    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
-    google.golang.org/protobuf/cmd/protoc-gen-go \
-    google.golang.org/grpc/cmd/protoc-gen-go-grpc`
+            github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
+            github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
+            google.golang.org/protobuf/cmd/protoc-gen-go \
+            google.golang.org/grpc/cmd/protoc-gen-go-grpc`
+    3. 
+    
