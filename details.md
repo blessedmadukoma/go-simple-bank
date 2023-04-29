@@ -293,7 +293,19 @@
         - Client streaming gRPC: client sends a stream of multiple requests or messages, server sends a response
         - Server streaming gRPC: client sends a request, server sends a stream of multiple responses or messages
         - Bidirectional streaming gRPC: client sends a stream of request, server sends a stream of multiple responses or messages
+        
+        ![Types of gRPC](docs/img/gRPC-gateway-explained.png)
+
     3. gRPC gateway: serves both gRPC and HTTP Requests at once
+        - A plugin of protobuf compiler
+        - Generate proxy codes from protobuf (image below)
+           
+            ![gRPC Gateway generating proxy codes](docs/img/gRPC-gateway-explained.png)
+
+        - Translate HTTP JSON calls to gRPC. 
+        - Two types of translation
+          - In-process tranlation: only works for unary. The gateway can call the gRPC handler directly in the code, without going through any extra hop on the network.
+          - Separate proxy server: both unary and streaming. The HTTP JSON request will be translated and forwarded to the gRPC server via a network call
 
 40. Generate Go code from protobuf
     1.  installed protobuf from [protobuf](https://grpc.io/docs/protoc-installation/) using the command: `brew install protobuf`
@@ -322,3 +334,13 @@
     1.  created a new file `rpc_create_user.go` in `gapi` folder and added the `CreateUser` method with a little modification (gRPC takes care of binding the data or fields i.e. no need for ctx.ShouldBindJSON)
     2.  created `converter.go` to convert `db,User` to `*pb.User`
     3.  created `rpc_login_user.go` and added `LoginUser` method.
+
+43. gRPC gateway: Write code once, serve both gRPC & HTTP requests
+    **Note**: Refer back to lesson 39 -> explains gRPC gateway, types of gRPC.
+    1.   created a new package `tools` with a file `tools.go`, installed [gRPC gateway](https://github.com/grpc-ecosystem/grpc-gateway) (ran go mod tidy)
+    2.   Installed the binaries needed by running this command:
+        `go install \
+    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
+    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
+    google.golang.org/protobuf/cmd/protoc-gen-go \
+    google.golang.org/grpc/cmd/protoc-gen-go-grpc`
