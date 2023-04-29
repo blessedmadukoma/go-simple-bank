@@ -1,18 +1,22 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"log"
 	"net"
+	"net/http"
 
 	"github.com/blessedmadukoma/go-simple-bank/api"
 	db "github.com/blessedmadukoma/go-simple-bank/db/sqlc"
 	"github.com/blessedmadukoma/go-simple-bank/gapi"
 	"github.com/blessedmadukoma/go-simple-bank/pb"
 	"github.com/blessedmadukoma/go-simple-bank/util"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func main() {
@@ -20,6 +24,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Cannot load config:", err)
 	}
+
 	// connect to database
 	conn, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
@@ -28,6 +33,7 @@ func main() {
 
 	store := db.NewStore(conn)
 	// runGinServer(config, store)
+	go runGatewayServer(config, store) // run in a separate goroutine
 	runGrpcServer(config, store)
 
 }
@@ -65,5 +71,45 @@ func runGrpcServer(config util.Config, store db.Store) {
 	err = grpcServer.Serve(listener)
 	if err != nil {
 		log.Fatal("cannot start gRPC server:", err)
+	}
+}
+
+func runGatewayServer(config util.Config, store db.Store) {
+	server, err := gapi.NewServer(config, store)
+	if err != nil {
+		log.Fatal("cannot create server:", err)
+	}
+
+	jsonOptions := runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
+		MarshalOptions: protojson.MarshalOptions{
+			UseProtoNames: true,
+		},
+		UnmarshalOptions: protojson.UnmarshalOptions{
+			DiscardUnknown: true,
+		},
+	})
+
+	grpcMux := runtime.NewServeMux(jsonOptions)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	err = pb.RegisterSimpleBankHandlerServer(ctx, grpcMux, server)
+	if err != nil {
+		log.Fatal("cannot register gateway server:", err)
+	}
+
+	mux := http.NewServeMux()
+	mux.Handle("/", grpcMux)
+
+	listener, err := net.Listen("tcp", config.HTTPServerAddress)
+	if err != nil {
+		log.Fatal("cannot create listener:", err)
+	}
+
+	log.Printf("Starting HTTP gateway server at %s\n", config.HTTPServerAddress)
+	err = http.Serve(listener, mux)
+	if err != nil {
+		log.Fatal("cannot start HTTP gateway server:", err)
 	}
 }

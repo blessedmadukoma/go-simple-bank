@@ -344,5 +344,34 @@
             github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
             google.golang.org/protobuf/cmd/protoc-gen-go \
             google.golang.org/grpc/cmd/protoc-gen-go-grpc`
-    3. 
-    
+    3.  Generate reverse-proxy using protoc-gen-grpc-gateway
+        1. created a folder `google/api` in the `proto` directory.
+        2. cloned the `googleapis` repository and copied the following files into the `google/api` folder created in the `proto` directory:
+           - google/api/annotations.proto
+           - google/api/field_behavior.proto
+           - google/api/http.proto
+           - google/api/httpbody.proto
+        3. added the custom annotations into the .proto file (`service_simple_bank.proto`):
+           - add `import "google/api/annotations.proto";`
+           - add `option (google.api.http) = {
+                      post: "/v1/create_user"
+                      body: "*"
+                    };`
+                to the body of `CreateUser` rpc method.
+           - add `option (google.api.http) = {
+                      post: "/v1/login_user"
+                      body: "*"
+                    };`
+                to the body of `LoginUser` rpc method.
+        4. Updated the `proto` command in the Makefile to generate the stubs for the gRPC and the gateway; and ran `make proto`
+        5. In the `main.go` file, duplicated the `runGRPCServer` to `runGatewayServer`, updated the `runGatewayServer` and ran as a goroutine i.e. go runGatewayServer(config, store)
+        6. Not necessary but if you want the response to be in snake case (`session_id`, `full_name`, `access_token`), instead of camel case (`sessionId`, `accessToken`), add this:
+            1. `jsonOptions := runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
+            		MarshalOptions: protojson.MarshalOptions{
+            			UseProtoNames: true,
+            		},
+            		UnmarshalOptions: protojson.UnmarshalOptions{
+            			DiscardUnknown: true,
+            		},
+            	})`
+            2. Parse the `jsonOptions` variable to the runtime.NewServeMux(jsonOptions).
