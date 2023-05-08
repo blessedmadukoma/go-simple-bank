@@ -377,4 +377,8 @@
             2. Parse the `jsonOptions` variable to the runtime.NewServeMux(jsonOptions).
 
 44. Metadata in gRPC:
-    1.  
+    1.  Metadata: some information about an RPC call in the form of key-value pairs. It let's the client provide extra information associated with the call to the server and vice versa
+    2.  created `metadata.go` in `gapi` folder to extra the client IP and user agent information.
+    3.  updated `rpc_login_user.go` by adding the metadata method.
+    4.  updated `metadata.go` to retreive client IP and user agent from API gateway e.g. postman, thunderclient
+    5.  added `peer` package to retreive client IP and user agent from gRPC client (e.g. evans)
