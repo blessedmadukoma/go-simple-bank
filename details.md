@@ -390,4 +390,13 @@
     4.  changed from Swagger hub to [Swagger-ui](https://github.com/swagger-api/swagger-ui) package to serve server-side
     5.  cloned the swagger ui repository, copied the dist folder (`swagger-ui/dist/*`) to the swagger docs folder (`docs/swagger/`)
     6.  changed the URL in `swagger-initializer.json` to `simple_bank.swagger.json` file.
-    7.  
+
+46. Embed front-end code inside Go server binary
+    1.  installed [statik](https://github.com/rakyll/statik) by: 
+        - adding the URL into `tools.go` and running `go mod tidy`
+        - installing the CLI tool by running `go install github.com/rakyll/statik`. <br>
+        Statik is used embed a directory of static files into the Go binary.
+    2. updated  `proto` command in the Makefile to include the statik binary generator to embed the swagger docs (namespace was not specified because only one static folder is being served i.e. swagger).
+    3. Ran `make proto` to regenerate.
+    4. updated `main.go` to serve swagger UI from memory not hard drive
+    5. updated `service_simple_bank.proto` to include summary and description for the gRPC apis.
