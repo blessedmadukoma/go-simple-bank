@@ -10,6 +10,7 @@ import (
 type Config struct {
 	DBDriver             string        `mapstructure:"DB_DRIVER"`
 	DBSource             string        `mapstructure:"DB_SOURCE"`
+	MigrationURL         string        `mapstructure:"MIGRATION_URL"`
 	TokenSymmetricKey    string        `mapstructure:"TOKEN_SYMMETRIC_KEY"`
 	SwaggerDir           string        `mapstructure:"SWAGGER_DIR"`
 	HTTPServerAddress    string        `mapstructure:"HTTP_SERVER_ADDRESS"`

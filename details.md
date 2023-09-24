@@ -404,3 +404,8 @@
 47. GRPC Params Validation
     1.  created separate validation folder `gvalidator` and added validation for validating gRPC input data
     2.  created `errors.go` and added the validation functions created into `rpc_create_user.go` and `rpc_login_user.go`.
+
+48. Run DB Migrations directly inside Golang Code
+    1.  updated `app.env` to include `MIGRATION_URL`, updated `start.sh` to state `starting the app...` and executing all parameters.
+    2.  updated Dockerfile and docker-compose.yaml to use the correct API ports, added volume and updated the db/migration location
+    3.  added the migration implementation and imports i.e. `runDBMigration` into `main.go`
