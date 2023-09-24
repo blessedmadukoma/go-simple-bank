@@ -400,3 +400,7 @@
     3. Ran `make proto` to regenerate.
     4. updated `main.go` to serve swagger UI from memory not hard drive
     5. updated `service_simple_bank.proto` to include summary and description for the gRPC apis.
+
+47. GRPC Params Validation
+    1.  created separate validation folder `gvalidator` and added validation for validating gRPC input data
+    2.  created `errors.go` and added the validation functions created into `rpc_create_user.go` and `rpc_login_user.go`.
