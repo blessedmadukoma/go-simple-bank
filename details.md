@@ -409,3 +409,9 @@
     1.  updated `app.env` to include `MIGRATION_URL`, updated `start.sh` to state `starting the app...` and executing all parameters.
     2.  updated Dockerfile and docker-compose.yaml to use the correct API ports, added volume and updated the db/migration location
     3.  added the migration implementation and imports i.e. `runDBMigration` into `main.go`
+
+49. Partial Update & Null Params in Go with SQLC
+    1.  added `UpdateUser` SQL code (using sqlc.nargs, COALESCE and null params) to `user.sql` which updates specific values if there is an input. Ran `make sqlc` to generate the method.
+    2.  added test cases for updating each field and all the fields in `user_test.go`
+    3.  ran `make mock` to regenerate using mockgen.
+    4.  ran `docker compose up` to verify the server runs in docker.
