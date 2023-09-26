@@ -422,3 +422,7 @@
     3.  Ran `make proto` to include the new changes.
     4.  implemented the update user methods in `gapi/rpc_update_user.go` and fixed the invalid params error for `full_name` in `gvalidator/validator.go`.
     5.  fixed the `password_changed_at` error which does not change when the password is updated by updating `user.sql` and running `make sqlc` and `make mock`
+
+51. Add Authorization to protect gRPC API
+    1.  created `gapi/authorization.go` and added code for validating user's auth token
+    2.  added error for `unauthenticatedUser` to `error.go` and added the new codes the `rpc_update_user.go` 
