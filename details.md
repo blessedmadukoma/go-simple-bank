@@ -415,3 +415,10 @@
     2.  added test cases for updating each field and all the fields in `user_test.go`
     3.  ran `make mock` to regenerate using mockgen.
     4.  ran `docker compose up` to verify the server runs in docker.
+
+50. gRPC Update API with optional parameters
+    1.  duplicated `rpc_create_user.proto` to `rpc_update_user.proto` since the contents are similar.
+    2.  added the optional parameters the fields, and imported `rpc_update_user.proto` to the rpc service file `service_simple_bank.proto`. **Note:**Everytime we make a change to the service file, we change the version, to help track the changes.
+    3.  Ran `make proto` to include the new changes.
+    4.  implemented the update user methods in `gapi/rpc_update_user.go` and fixed the invalid params error for `full_name` in `gvalidator/validator.go`.
+    5.  fixed the `password_changed_at` error which does not change when the password is updated by updating `user.sql` and running `make sqlc` and `make mock`
