@@ -426,3 +426,8 @@
 51. Add Authorization to protect gRPC API
     1.  created `gapi/authorization.go` and added code for validating user's auth token
     2.  added error for `unauthenticatedUser` to `error.go` and added the new codes the `rpc_update_user.go` 
+
+52. Fast + Structured gRPC Logger
+    1.  added `grpc.UnaryInterceptor()` to `main.go` for structured logging
+    2.  created `gapi/logger.go` and implemented log method using the [zerolog](https://github.com/rs/zerolog/log) package.
+    3.  updated `main.go` to use the new logger. Added colored/pretty logging for development mode by setting the `ENVIRONMENT=development` in `app.env`, including the new env field into `config.go` and adding `log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})` to the top of the `main` function.
