@@ -431,3 +431,8 @@
     1.  added `grpc.UnaryInterceptor()` to `main.go` for structured logging
     2.  created `gapi/logger.go` and implemented log method using the [zerolog](https://github.com/rs/zerolog/log) package.
     3.  updated `main.go` to use the new logger. Added colored/pretty logging for development mode by setting the `ENVIRONMENT=development` in `app.env`, including the new env field into `config.go` and adding `log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})` to the top of the `main` function.
+
+53. HTTP Logger Middleware
+    1.  added log method `HttpLogger` in `logger.go` for HTTP middleware and requests.
+    2.  added the newly created logger method to `main.go`
+    3.  created `ResponseRecorder` struct to retrieve the status code and status text from HTTP requests. Implemented a new `WriteHeader` and `Write` method
