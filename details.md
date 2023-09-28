@@ -452,3 +452,11 @@
     1. installed the [asynq](https://github.com/hibiken/asynq) using `go get`.
     2. created a new package `worker` and file `distributor.go` to create tasks and distribute them to workers.
     3. created `task_send_verify_email.go` to handle the distribution and processing of the verification email being sent, and `processor.go` to pick the task and process it. Added interface methods to `Start()` and `ProcessSendVerifyEmail`.
+
+55. Integrate workers to Go web server
+    1.  setup redis on Docker, added `redis` and `redisping` commands to `Makefile`
+    2.  added `REDIS_ADDRESS` to `app.env` and `config.go`.
+    3.  initialized redis client in `main.go`, added background task worker  to `gapi/server.go` to be available to all its gRPC handler functions and methods.
+    4.  sent email to user in `rpc_create_user.go` by calling the worker and task distributor.
+    5.  added `runTaskProcessor` to run/start the task processor
+    6.  set processor to take tasks from the critical queue, not only the default queue

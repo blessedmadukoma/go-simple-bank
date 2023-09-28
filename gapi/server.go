@@ -7,7 +7,7 @@ import (
 	"github.com/blessedmadukoma/go-simple-bank/pb"
 	"github.com/blessedmadukoma/go-simple-bank/token"
 	"github.com/blessedmadukoma/go-simple-bank/util"
-	"github.com/gin-gonic/gin"
+	"github.com/blessedmadukoma/go-simple-bank/worker"
 )
 
 // Server struct serves gRPC requests for our banking service
@@ -16,11 +16,12 @@ type Server struct {
 	config     util.Config
 	store      db.Store
 	tokenMaker token.Maker
-	router     *gin.Engine
+	// router     *gin.Engine
+	taskDistributor worker.TaskDistributor
 }
 
 // NewServer creates a new gRPC server.
-func NewServer(config util.Config, store db.Store) (*Server, error) {
+func NewServer(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) (*Server, error) {
 	// tokenMaker, err := token.NewJWTMaker(config.TokenSymmetricKey)
 	tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
 	if err != nil {
@@ -28,9 +29,10 @@ func NewServer(config util.Config, store db.Store) (*Server, error) {
 	}
 
 	server := &Server{
-		store:      store,
-		tokenMaker: tokenMaker,
-		config:     config,
+		store:           store,
+		tokenMaker:      tokenMaker,
+		config:          config,
+		taskDistributor: taskDistributor,
 	}
 
 	return server, nil

@@ -2,11 +2,14 @@ package gapi
 
 import (
 	"context"
+	"time"
 
 	db "github.com/blessedmadukoma/go-simple-bank/db/sqlc"
 	"github.com/blessedmadukoma/go-simple-bank/gvalidator"
 	"github.com/blessedmadukoma/go-simple-bank/pb"
 	"github.com/blessedmadukoma/go-simple-bank/util"
+	"github.com/blessedmadukoma/go-simple-bank/worker"
+	"github.com/hibiken/asynq"
 	"github.com/lib/pq"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
@@ -40,6 +43,25 @@ func (srv *Server) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*
 			}
 		}
 		return nil, status.Errorf(codes.Unimplemented, "failed to create user: %s", err)
+	}
+
+	// TODO: use db transaction
+
+	// send verify email to user
+	taskPayload := &worker.PayloadSendVerifyEmail{
+		Username: user.Username,
+	}
+
+	// set task to be processed or retried
+	opts := []asynq.Option{
+		asynq.MaxRetry(10),                // to be retried at most 10 times
+		asynq.ProcessIn(10 * time.Second), // to be processed in 10 seconds
+		asynq.Queue(worker.QueueCritical), // to be processed in the "critical" queue
+	}
+
+	err = srv.taskDistributor.DistributeTaskSendVerifyEmail(ctx, *taskPayload, opts...)
+	if err != nil {
+		return nil, status.Errorf(codes.Unimplemented, "failed to distribute task to send verify email: %s", err)
 	}
 
 	rsp := &pb.CreateUserResponse{
