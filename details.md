@@ -436,3 +436,19 @@
     1.  added log method `HttpLogger` in `logger.go` for HTTP middleware and requests.
     2.  added the newly created logger method to `main.go`
     3.  created `ResponseRecorder` struct to retrieve the status code and status text from HTTP requests. Implemented a new `WriteHeader` and `Write` method
+
+54. Process async tasks with background workers
+    - Asynchronous Processing:
+      - Using go routines:
+        - **Pros:** Process tasks in the background
+        - **Pros:** Easy to implement
+        - **Cons:** Possible tasks lost
+      - Using message broker and background workers:
+        - **Pros:** tasks are saved in both memory and persistent storage
+        - **Pros:** highly available: Redis sentinel or Redis Cluster
+        - **Pros:** No tasks lost
+        - Example of a message broker: Redis Queue
+    - The message broker will be used to send verification email once a user is created.
+    1. installed the [asynq](https://github.com/hibiken/asynq) using `go get`.
+    2. created a new package `worker` and file `distributor.go` to create tasks and distribute them to workers.
+    3. created `task_send_verify_email.go` to handle the distribution and processing of the verification email being sent, and `processor.go` to pick the task and process it. Added interface methods to `Start()` and `ProcessSendVerifyEmail`.
