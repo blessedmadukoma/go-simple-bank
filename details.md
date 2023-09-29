@@ -460,3 +460,11 @@
     4.  sent email to user in `rpc_create_user.go` by calling the worker and task distributor.
     5.  added `runTaskProcessor` to run/start the task processor
     6.  set processor to take tasks from the critical queue, not only the default queue
+
+56. Send async tasks to Redis with DB Transaction
+    1.  refactored `db/sqlc/store.go` by moving the transactions to `db/sqlc/tx_transfer.go`.
+    2.  craeted `db/sqlc/tx_create_user.go` and implemented transaction queries
+    3.  updated `db/sqlc/store.go` to include `CreateUserTx` function
+    4.  updated `rpc_create_user.go` to include the newly created create user transaction methods and added the redis asynq queue to run in the same db transaction to create the user in which if there's an error, user is not added and the db retries the transaction.
+    5.  ran `make mock` to update the mockgen.
+
