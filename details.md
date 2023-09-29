@@ -468,3 +468,6 @@
     4.  updated `rpc_create_user.go` to include the newly created create user transaction methods and added the redis asynq queue to run in the same db transaction to create the user in which if there's an error, user is not added and the db retries the transaction.
     5.  ran `make mock` to update the mockgen.
 
+57. Handle errors and print logs for Go Asynq workers
+    1. updated `processor.go` to include error handler
+    2. created a `worker/logger.go` to mirror the asynq logger package, and added the mirrored logger so aysnq and redis logs will be the same with the current logs.
