@@ -471,3 +471,7 @@
 57. Handle errors and print logs for Go Asynq workers
     1. updated `processor.go` to include error handler
     2. created a `worker/logger.go` to mirror the asynq logger package, and added the mirrored logger so aysnq and redis logs will be the same with the current logs.
+
+58. Why delay added to Asynq Tasks is good
+    1.  This is good to allow the transaction commit into the db and the sending of email to be done.
+
