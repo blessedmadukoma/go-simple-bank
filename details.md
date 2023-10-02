@@ -479,3 +479,8 @@
     1.  ran `go get github.com/jordan-wright/email`.
     2.  created `mail` package and `mail/sender.go` to define mailer interfaces and structs.
     3.  added mail credentials `app.env`, updated `config.go` to include the email settings in the struct and wrote test for `sender.go` in `sender_test.go`.
+
+60. Skip tests
+    1.  Skip tests that take time to run such as the E-mail test
+    2.  added a check to see if testing that takes a long time i.e. `testing.Short()` is true in `sender_test.go`, then skip the test.
+    3.  Updated the Makefile to include skipping the tests
