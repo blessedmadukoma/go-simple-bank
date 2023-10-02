@@ -475,3 +475,7 @@
 58. Why delay added to Asynq Tasks is good
     1.  This is good to allow the transaction commit into the db and the sending of email to be done.
 
+59. Send Email in Go using Gmail
+    1.  ran `go get github.com/jordan-wright/email`.
+    2.  created `mail` package and `mail/sender.go` to define mailer interfaces and structs.
+    3.  added mail credentials `app.env`, updated `config.go` to include the email settings in the struct and wrote test for `sender.go` in `sender_test.go`.
