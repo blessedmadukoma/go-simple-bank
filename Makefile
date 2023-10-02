@@ -42,6 +42,9 @@ migratedown:
 migratedown1:
 		migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/simplebank?sslmode=disable" -verbose down 1
 
+new_migration:
+		migrate create -ext sql -dir db/migration -seq $(name)
+
 sqlc:
 		sqlc generate
 
@@ -82,4 +85,4 @@ redis:
 redisping:
 	docker exec -it redis redis-cli ping
 
-.PHONY: postgres createdb dropdb psql createmigration migrateup migratedown migrateup1 migratedown1 sqlc test db_docs db_schema server mock proto evans redis redisping
+.PHONY: postgres createdb dropdb psql createmigration migrateup migratedown migrateup1 migratedown1 sqlc test db_docs db_schema server mock proto evans redis redisping new_migration

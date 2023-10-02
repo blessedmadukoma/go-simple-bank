@@ -484,3 +484,11 @@
     1.  Skip tests that take time to run such as the E-mail test
     2.  added a check to see if testing that takes a long time i.e. `testing.Short()` is true in `sender_test.go`, then skip the test.
     3.  Updated the Makefile to include skipping the tests
+
+61. Design DB for Email verification
+    1.  updated `db.dbml` docs to include email verification table. Ran `make db_schema` to generate a `schema.sql` file
+    2.  added new `Makefile` command to migrate new schema i.e. `new_migration` and ran `make new_migration name=add_verify_emails` to generate a new migration file for `verify_emails`
+    3.  ran `make migrateup` to commit the migration into the database
+    4.  created `db/query/verify_email.sql` to generate code. Ran `make sqlc` and `make mock`.
+    5.  updated `task_send_verify_email.go` by adding `CreateVerifyEmail` and imnplementing the mail sender. Updated `processor.go` to include the mailer as a field in the `RedisTaskProcessor` struct.
+    6.  updated `main.go` to include the mailer.

@@ -6,9 +6,29 @@ Project simple_bank {
   '''
 }
 
+Table users as U {
+  username varchar [pk]
+  hashed_password varchar [not null]
+  full_name varchar [not null]
+  email varchar [not null]
+  is_email_verified bool [not null, default: false]
+  password_changed_at timestamptz [not null, default: `0001-01-01`]
+  created_at timestamptz [not null, default: `now()`]
+}
+
+Table verify_emails {
+  id bigserial [pk]
+  username varchar [ref: > U.username, not null]
+  email varchar [not null]
+  secret_code varchar [not null]
+  is_used bool [not null, default: false]
+  created_at timestamptz [not null, default: `now()`]
+  expired_at timestamptz [not null, default: `now() + interval '15 minutes'`]
+}
+
 Table "accounts" {
   "id" bigserial [pk, increment]
-  "owner" varchar [not null]
+  "owner" varchar [ref: > U.username, not null]
   "balance" numeric [not null]
   "currency" varchar [not null]
   "created_at" timestamptz [not null, default: `now()`]
