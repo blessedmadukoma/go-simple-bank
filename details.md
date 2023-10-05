@@ -492,3 +492,11 @@
     4.  created `db/query/verify_email.sql` to generate code. Ran `make sqlc` and `make mock`.
     5.  updated `task_send_verify_email.go` by adding `CreateVerifyEmail` and imnplementing the mail sender. Updated `processor.go` to include the mailer as a field in the `RedisTaskProcessor` struct.
     6.  updated `main.go` to include the mailer.
+
+62. Verify Email API in Go
+    1.  duplicated `rpc_create_user.proto` to `rpc_verify_email.proto` and replaced all `CreateUser` texts to `VerifyEmail`.
+    2.  added the newly created rpc file to `service_simple_bank.proto` and ran `makke proto`. Reloaded vs code to clear errors.
+    3.  duplicated `rpc_create_user.go` to `rpc_verify_email.go`, added validation for email ID and secret_code in `gavlidator/validator.go`.
+    4.  updated `verify_email.sql` to include new query to update the verify email and `user.sql` to update `is_email_verified` field. Ran `make sqlc`. 
+    5.  Added `VerifyEmailTx(ctx context.Context, arg VerifyEmailTxParams) (VerifyEmailTxResult, error)` to the `Store` interface and ran `make mock`.
+    6.  created `tx_verify_email.go` to handle transaction for verifying email and updating the database tables. 
