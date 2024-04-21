@@ -510,4 +510,7 @@
 64. Skipping for now
 
 65. Config sqlc v2 for Go and Postgres:
+    1.  update sqlc.yaml to use version 2 configuration
+
+66. Switch db driver from lib/pq to pgx
     1.  
