@@ -500,3 +500,10 @@
     4.  updated `verify_email.sql` to include new query to update the verify email and `user.sql` to update `is_email_verified` field. Ran `make sqlc`. 
     5.  Added `VerifyEmailTx(ctx context.Context, arg VerifyEmailTxParams) (VerifyEmailTxResult, error)` to the `Store` interface and ran `make mock`.
     6.  created `tx_verify_email.go` to handle transaction for verifying email and updating the database tables. 
+
+63. United GRPC Services: Mock DB + Redis
+    1.  created `rpc
+    2.  `rpc_create_user_test.go` in gapi package to test the rpc version for create user including sending async mails using redis
+    3.  created `gapi/main_test.go` to a set up an rpc test main server which mocks the original rpc main server
+    4.  updated `mock` command in the `Makefile` to generate a mock task worker
+    5.  ran `make mock` to generate the mock task worker
