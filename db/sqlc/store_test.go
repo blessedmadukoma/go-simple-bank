@@ -9,7 +9,6 @@ import (
 )
 
 func TestTransferTx(t *testing.T) {
-	store := NewStore(testDB)
 
 	account1 := createRandomAccount(t)
 	account2 := createRandomAccount(t)
@@ -23,7 +22,7 @@ func TestTransferTx(t *testing.T) {
 	for i := 0; i < n; i++ {
 		go func() {
 			ctx := context.Background()
-			result, err := store.TransferTx(ctx, TransferTxParams{
+			result, err := testStore.TransferTx(ctx, TransferTxParams{
 				FromAccountID: account1.ID,
 				ToAccountID:   account2.ID,
 				Amount:        amount,
@@ -49,7 +48,7 @@ func TestTransferTx(t *testing.T) {
 		require.NotZero(t, transfer.CreatedAt)
 		require.NotZero(t, transfer.ID)
 
-		_, err = store.GetTransferByID(context.Background(), transfer.ID)
+		_, err = testStore.GetTransferByID(context.Background(), transfer.ID)
 		require.NoError(t, err)
 
 		fromEntry := result.FromEntry
@@ -59,7 +58,7 @@ func TestTransferTx(t *testing.T) {
 		require.NotZero(t, fromEntry.CreatedAt)
 		require.NotZero(t, fromEntry.ID)
 
-		_, err = store.GetEntryByID(context.Background(), fromEntry.ID)
+		_, err = testStore.GetEntryByID(context.Background(), fromEntry.ID)
 		require.NoError(t, err)
 
 		toEntry := result.ToEntry
@@ -69,7 +68,7 @@ func TestTransferTx(t *testing.T) {
 		require.NotZero(t, toEntry.CreatedAt)
 		require.NotZero(t, toEntry.ID)
 
-		_, err = store.GetEntryByID(context.Background(), toEntry.ID)
+		_, err = testStore.GetEntryByID(context.Background(), toEntry.ID)
 		require.NoError(t, err)
 
 		//check account
@@ -99,9 +98,9 @@ func TestTransferTx(t *testing.T) {
 	}
 
 	//check the final updated balance
-	updatedAccount1, err := testQueries.GetAccountByID(context.Background(), account1.ID)
+	updatedAccount1, err := testStore.GetAccountByID(context.Background(), account1.ID)
 	require.NoError(t, err)
-	updatedAccount2, err := testQueries.GetAccountByID(context.Background(), account2.ID)
+	updatedAccount2, err := testStore.GetAccountByID(context.Background(), account2.ID)
 	require.NoError(t, err)
 
 	fmt.Printf(">>after tansaction -> updatedAcct1 bal: %d, updatedAcct2 bal: %d \n", updatedAccount1.Balance, updatedAccount1.Balance)
@@ -109,3 +108,24 @@ func TestTransferTx(t *testing.T) {
 	require.Equal(t, account1.Balance-int64(n)*amount, updatedAccount1.Balance)
 	require.Equal(t, account2.Balance+int64(n)*amount, updatedAccount2.Balance)
 }
+
+// func TestTransferTxDeadlock(t *testing.T) {
+// 	account1 := createRandomAccount(t)
+// 	account2 := createRandomAccount(t)
+
+// 	fmt.Println(">> before:", account1.Balance, account2.Balance)
+
+// 	n := 10
+// 	amount := int64(10)
+// 	errs := make(chan error)
+
+// 	for i := 0; i < n; i++ {
+// 		FromAccountID := account1.ID
+// 		ToAccountID := account2.ID
+
+// 		if i%2 == 1 {
+// 			FromAccountID = account2.ID
+// 			ToAccountID = account1.ID
+// 		}
+// 	}
+// }

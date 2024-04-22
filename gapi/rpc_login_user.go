@@ -2,7 +2,7 @@ package gapi
 
 import (
 	"context"
-	"database/sql"
+	"errors"
 
 	db "github.com/blessedmadukoma/go-simple-bank/db/sqlc"
 	"github.com/blessedmadukoma/go-simple-bank/gvalidator"
@@ -22,7 +22,7 @@ func (srv *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (*pb
 
 	user, err := srv.store.GetUserByUsername(ctx, req.Username)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, db.ErrRecordNotFound) {
 			return nil, status.Errorf(codes.NotFound, "user not found")
 		}
 		return nil, status.Errorf(codes.Internal, "failed to find user: %s", err)

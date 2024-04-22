@@ -513,4 +513,14 @@
     1.  update sqlc.yaml to use version 2 configuration
 
 66. Switch db driver from lib/pq to pgx
-    1.  
+    1. replace `github.com/lib/pq` with `github.com/jackc/pgx/v5`, run `go mod tidy`.
+    2. update `sqlc.yaml` to use the specific sql package: `pgx/v5`, run `make sqlc`, fix breaking changes.
+    3. update `sqlc.yaml` to:
+        - overide pgx `timestamptz` with golang's `time.Time` for time fields
+        - overide pgx `uuid` type with google's `github.com/google/uuid.UUID` type for time fields
+    4. update `sql.NullBool` to `pgtype.Bool`, `sql.NullString` to `pgtype.Text` and `sql.NullTime` to `pgtype.Timestamptz`
+    5. update `Store.go` to use `pgxpool` for a pool of connections instead of `pgx.Connect` which only opens one connection
+    6. moved `exectTx` method to a new file `exec_tx.go`
+    7. used one variable instead of `queries` and `db`, replace all `testQueries` variable with `testStore`
+    8. defined custom `ErrRecordNotFound` to use `pgx.ErrNoRows` in `error.go` and changed `sql.ErrNoRows` to use the new variable `ErrRecordNotFound`.
+    9. replaced all `err == sql.ErrNoRows` with `errors.Is(err, db.ErrRecordNotFound)`

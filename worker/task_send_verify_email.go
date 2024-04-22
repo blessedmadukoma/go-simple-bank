@@ -2,8 +2,8 @@ package worker
 
 import (
 	"context"
-	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	db "github.com/blessedmadukoma/go-simple-bank/db/sqlc"
@@ -55,7 +55,7 @@ func (processor *RedisTaskProcessor) ProcessTaskSendVerifyEmail(ctx context.Cont
 
 	user, err := processor.store.GetUserByUsername(ctx, payload.Username)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, db.ErrRecordNotFound) {
 			return fmt.Errorf("user does not exist: %w", asynq.SkipRetry)
 		}
 

@@ -1,7 +1,7 @@
 package api
 
 import (
-	"database/sql"
+	"errors"
 	"net/http"
 	"time"
 
@@ -90,7 +90,7 @@ func (server *Server) getUserByUsername(ctx *gin.Context) {
 
 	user, err := server.store.GetUserByUsername(ctx, req.Username)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, db.ErrRecordNotFound) {
 			ctx.JSON(http.StatusNotFound, errorResponse("No record of this user", err))
 			return
 		}
@@ -128,7 +128,7 @@ func (srv *Server) loginUser(ctx *gin.Context) {
 
 	user, err := srv.store.GetUserByUsername(ctx, req.Username)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, db.ErrRecordNotFound) {
 			ctx.JSON(http.StatusNotFound, errorResponse("user not found", err))
 			return
 		}
