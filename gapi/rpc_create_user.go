@@ -10,7 +10,6 @@ import (
 	"github.com/blessedmadukoma/go-simple-bank/util"
 	"github.com/blessedmadukoma/go-simple-bank/worker"
 	"github.com/hibiken/asynq"
-	"github.com/lib/pq"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -53,11 +52,8 @@ func (srv *Server) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*
 
 	txResult, err := srv.store.CreateUserTx(ctx, arg)
 	if err != nil {
-		if pqErr, ok := err.(*pq.Error); ok {
-			switch pqErr.Code.Name() {
-			case "unique_violation":
-				return nil, status.Errorf(codes.AlreadyExists, "already exists: %s", err)
-			}
+		if db.ErrorCode(err) == db.UniqueViolation {
+			return nil, status.Errorf(codes.AlreadyExists, "%s", err.Error())
 		}
 		return nil, status.Errorf(codes.Unimplemented, "failed to create user: %s", err)
 	}

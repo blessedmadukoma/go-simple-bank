@@ -521,6 +521,10 @@
     4. update `sql.NullBool` to `pgtype.Bool`, `sql.NullString` to `pgtype.Text` and `sql.NullTime` to `pgtype.Timestamptz`
     5. update `Store.go` to use `pgxpool` for a pool of connections instead of `pgx.Connect` which only opens one connection
     6. moved `exectTx` method to a new file `exec_tx.go`
-    7. used one variable instead of `queries` and `db`, replace all `testQueries` variable with `testStore`
+    7. used  one variable instead of `queries` and `db`, replace all `testQueries` variable with `testStore`
     8. defined custom `ErrRecordNotFound` to use `pgx.ErrNoRows` in `error.go` and changed `sql.ErrNoRows` to use the new variable `ErrRecordNotFound`.
     9. replaced all `err == sql.ErrNoRows` with `errors.Is(err, db.ErrRecordNotFound)`
+
+67. Handle DB Errors with PGX - move from `lib/pq` to `pgx` completely
+    1.  implement `ErrorCode` method to check error code in `pgx`
+    2.  updated all files using `lib/pq` to use `pgx`
